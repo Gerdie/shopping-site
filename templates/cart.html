@@ -16,15 +16,15 @@
             {% for melon in melons %}
                 <tr>
                     <td>{{ melon.common_name }}</td>
-                    <td>{{ session["cart"][melon.melon_id] }}</td>
+                    <td>{{ melon.quantity }}</td>
                     <td>{{ "$%.2f"|format(melon.price) }}</td>
-                    <td>{{ "$%.2f"|format(melon.price * session["cart"][melon.melon_id]) }}</td>
+                    <td>{{ "$%.2f"|format(melon.total_price) }}</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
 
-    <h3>Total: $27.00</h3>
+    <h3>Total: {{ "$%.2f"|format(total) }}</h3>
 
     <a href="/checkout" class="btn btn-large btn-primary">Check Out</a>
 

@@ -9,6 +9,7 @@ Authors: Joel Burton, Christian Fernandez, Meggie Mahnken, Katie Byers.
 
 from flask import Flask, render_template, redirect, flash, session
 import jinja2
+from functools import reduce
 
 import melons
 
@@ -77,12 +78,23 @@ def show_shopping_cart():
     #
     # Make sure your function can also handle the case wherein no cart has
     # been added to the session
-    cart_dic = session["cart"]
+    
+    if 'cart' in session:
+        cart_dic = session["cart"]
+    else:
+        cart_dic = {}
+        flash('Add melons to your cart!')
     melon_list = [melons.get_by_id(melon_id) for melon_id in cart_dic]
 
+    total_cost = 0
+
+    for melon in melon_list:
+        melon.quantity = session['cart'][melon.melon_id]
+        melon.total_price = melon.quantity * melon.price
+        total_cost += melon.total_price
 
 
-    return render_template("cart.html", melons=melon_list)
+    return render_template("cart.html", melons=melon_list, total=total_cost)
 
 
 @app.route("/add_to_cart/<melon_id>")
