@@ -1,3 +1,5 @@
+from passlib.hash import pbkdf2_sha256
+
 """Customers at Hackbright."""
 
 
@@ -8,7 +10,7 @@ class Customer(object):
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
-        self.password = password
+        self.password = pbkdf2_sha256.encrypt(password, rounds=20000, salt_size=16)
 
     def __repr__(self):
 
